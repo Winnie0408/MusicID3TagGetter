@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.获取ID3信息" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:navigationBarColor">#00000000</item>
+        <item name="android:windowLightNavigationBar">true</item>
+<!--        <item name="android:statusBarColor">#7CA884</item>-->
+<!--        <item name="android:backgroundTint">@color/backgroundDay</item>-->
+        <!-- Customize your light theme here. -->
+    </style>
+
+    <style name="Theme.获取ID3信息" parent="Base.Theme.获取ID3信息" />
+</resources>

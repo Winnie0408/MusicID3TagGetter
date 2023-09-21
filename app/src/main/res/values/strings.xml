@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">获取ID3信息</string>
+    <string name="setDir">选择目录</string>
+    <string name="initTextView">请点击按钮，\n选择存放音乐文件的目录</string>
+</resources>
