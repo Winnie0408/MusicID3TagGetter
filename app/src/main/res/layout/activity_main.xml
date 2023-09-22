@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:minHeight="0dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/BackGroundTheme">
 
     <Button
         android:id="@+id/getId3Button"
