@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">获取ID3标签</string>
+    <string name="setDir">选择目录</string>
+    <string name="initTextView">请点击按钮，选择存放音乐文件的目录。</string>
+    <string name="toastChooseDirectory">请选择存放音乐文件的目录</string>
+    <string name="toastFailedGetManageAllFilesAccessPermission">未授予所有文件管理权限</string>
+    <string name="scanSongsDialogTitle">正在扫描</string>
+    <string name="scanSongsDialogMessage">请稍等…</string>
+    <string name="fileConflictAlertDialogTitle">文件冲突</string>
+    <string name="fileConflictAlertDialogMessage">已检测到上一次导出的结果文件#n请选择您的操作：</string>
+    <string name="fileConflictAlertDialogOptions1">追加</string>
+    <string name="fileConflictAlertDialogOptions2">覆盖</string>
+    <string name="youHaveSelected">您已选择：</string>
+    <string name="directory">目录。</string>
+    <string name="toastAlreadyHaveManageAllFileAccessPermission">已拥有所有文件管理权限</string>
+    <string name="toastGrantManageAllFileAccessPermission">请授予所有文件管理权限</string>
+    <string name="toastAlreadyHaveReadOrWriteExternalStoragePermissions">已拥有内部存储读写权限</string>
+    <string name="toastFailedGetReadOrWriteExternalStoragePermissions">未授予内部存储读写权限</string>
+    <string name="toastThisDirectoryDoNotHaveMusicFile">所选目录下没有音乐文件</string>
+    <string name="exportSongsDialogTitle">正在导出</string>
+    <string name="toastExportComplete1">导出完成，共</string>
+    <string name="toastExportComplete2">首歌。</string>
+    <string name="exportCompleteLogPrint">请前往Download目录查看结果：本地音乐导出.txt。</string>
+    <string name="outputFileName">本地音乐导出.txt</string>
+    <string name="appendLogPring">本次导出将追加到原有的“本地音乐导出.txt”文件。</string>
+    <string name="overwriteLogPrint">已删除旧的“本地音乐导出.txt”文件。</string>
+    <string name="progress">进度：</string>
+</resources>

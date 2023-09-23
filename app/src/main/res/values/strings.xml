@@ -1,5 +1,28 @@
 <resources>
-    <string name="app_name">获取ID3信息</string>
-    <string name="setDir">选择目录</string>
-    <string name="initTextView">请点击按钮，\n选择存放音乐文件的目录</string>
+    <string name="app_name">Get ID3 Tag</string>
+    <string name="setDir">Select Directory</string>
+    <string name="initTextView">Please click on the button to select the directory where the music files are stored.</string>
+    <string name="toastChooseDirectory">Please select the directory where you want to store your music files</string>
+    <string name="toastFailedGetManageAllFilesAccessPermission">Failure to obtain all file management privileges</string>
+    <string name="scanSongsDialogTitle">Scaning</string>
+    <string name="scanSongsDialogMessage">Just a second…</string>
+    <string name="fileConflictAlertDialogTitle">File Conflict</string>
+    <string name="fileConflictAlertDialogMessage">The last exported result file has been detected.#nPlease select your action:</string>
+    <string name="fileConflictAlertDialogOptions1">Append</string>
+    <string name="fileConflictAlertDialogOptions2">Overwrite</string>
+    <string name="youHaveSelected">"You have selected: "</string>
+    <string name="directory">" directory."</string>
+    <string name="toastAlreadyHaveManageAllFileAccessPermission">Already have all document management permission</string>
+    <string name="toastGrantManageAllFileAccessPermission">Please grant all file management permissions</string>
+    <string name="toastAlreadyHaveReadOrWriteExternalStoragePermissions">Already have read/write access to internal storage</string>
+    <string name="toastFailedGetReadOrWriteExternalStoragePermissions">Read and write access to internal storage not granted</string>
+    <string name="toastThisDirectoryDoNotHaveMusicFile">No music files in the selected directory</string>
+    <string name="exportSongsDialogTitle">Exporting</string>
+    <string name="toastExportComplete1">"Export complete, "</string>
+    <string name="toastExportComplete2">" songs in total."</string>
+    <string name="exportCompleteLogPrint">Please go to the Download directory to see the results: Local Music Export.txt.</string>
+    <string name="outputFileName">Local Music Export.txt</string>
+    <string name="appendLogPring">This export will be added to the original \"Local Music Export.txt\" file.</string>
+    <string name="overwriteLogPrint">The old \"Local Music Export.txt\" file has been deleted.</string>
+    <string name="progress">"Progress: "</string>
 </resources>

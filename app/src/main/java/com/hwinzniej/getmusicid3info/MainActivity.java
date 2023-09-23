@@ -2,6 +2,7 @@ package com.hwinzniej.getmusicid3info;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     ExecutorService executorPool;
     ExecutorService executorService;
     ProgressDialog progressDialog;
+    AlertDialog.Builder alertDialog;
+    int userAction = 0;
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
 
@@ -60,10 +64,11 @@ public class MainActivity extends AppCompatActivity {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if (Environment.isExternalStorageManager()) {
-//                            Toast.makeText(this, "已授予所有文件管理权限", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(this, "请选择存放音乐文件的目录", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, getResources().getString(R.string.toastAlreadyHaveManageAllFileAccessPermission), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.toastChooseDirectory), Toast.LENGTH_SHORT).show();
                     openDirectory();
-                } else Toast.makeText(this, "未授予所有文件管理权限", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(this, getResources().getString(R.string.toastFailedGetManageAllFilesAccessPermission), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -78,13 +83,33 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setCancelable(true);
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setTitle("正在扫描歌曲");
-        progressDialog.setMessage("请稍等...");
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle(getResources().getString(R.string.scanSongsDialogTitle));
+        progressDialog.setMessage(getResources().getString(R.string.scanSongsDialogMessage));
+
+        alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle(getResources().getString(R.string.fileConflictAlertDialogTitle));
+        alertDialog.setMessage(getResources().getString(R.string.fileConflictAlertDialogMessage).replace("#n", "\n"));
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton(getResources().getString(R.string.fileConflictAlertDialogOptions1), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                userAction = 1;
+            }
+        });
+        alertDialog.setNegativeButton(getResources().getString(R.string.fileConflictAlertDialogOptions2), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                userAction = 2;
+            }
+        });
 
         getId3Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logPrint.setText(R.string.initTextView);
+                progressDialog.setTitle(getResources().getString(R.string.scanSongsDialogTitle));
+                progressDialog.setMessage(getResources().getString(R.string.scanSongsDialogMessage));
+                logPrint.setText(getResources().getString(R.string.initTextView));
                 progressPercent = 0;
                 executorPool = Executors.newFixedThreadPool(core);
                 manageAllFiles();
@@ -99,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent data = result.getData();
                 if (data != null) {
                     Uri uri = data.getData();
-                    logPrint.append("\n\n您已选择：" + uri.getPathSegments().get(uri.getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/") + "目录\n");
+                    logPrint.append("\n\n" + getResources().getString(R.string.youHaveSelected) + uri.getPathSegments().get(uri.getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/") + getResources().getString(R.string.directory) + "\n");
                     progressDialog.show();
                     executorService.execute(new Runnable() {
                         @Override
@@ -115,10 +140,10 @@ public class MainActivity extends AppCompatActivity {
     private void manageAllFiles() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // Android 11及以上版本
             if (Environment.isExternalStorageManager()) {
-                Toast.makeText(this, "已拥有所有文件管理权限", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.toastAlreadyHaveManageAllFileAccessPermission), Toast.LENGTH_SHORT).show();
                 openDirectory();
             } else {
-                Toast.makeText(this, "请授予所有文件管理权限", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.toastGrantManageAllFileAccessPermission), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
                 activityResultLauncher.launch(intent);
             }
@@ -134,11 +159,11 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(MainActivity.this, "已授予内部存储读写权限", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "请选择存放音乐文件的目录", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.toastAlreadyHaveReadOrWriteExternalStoragePermissions), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.toastChooseDirectory), Toast.LENGTH_SHORT).show();
                 openDirectory();
             } else {
-                Toast.makeText(MainActivity.this, "未授予内部存储读写权限", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.toastFailedGetReadOrWriteExternalStoragePermissions), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -155,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(MainActivity.this, "该目录下没有音乐文件", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.toastThisDirectoryDoNotHaveMusicFile), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             });
@@ -164,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.setTitle("正在导出");
+                progressDialog.setTitle(getResources().getString(R.string.exportSongsDialogTitle));
             }
         });
         listFilesInTree(root);
@@ -230,34 +255,60 @@ public class MainActivity extends AppCompatActivity {
         writeToFile(tag, dfile);
 
         if (progressPercent == max) {
-            max = 0;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(MainActivity.this, "导出完成，共" + progressPercent + "首歌", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.toastExportComplete1) + progressPercent + getResources().getString(R.string.toastExportComplete2).replace("。", ""), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-                    logPrint.append("\n导出完成！\n请前往Download目录查看结果：本地音乐导出.txt");
+                    logPrint.append("\n" + getResources().getString(R.string.toastExportComplete1) + progressPercent + getResources().getString(R.string.toastExportComplete2) + "\n" + getResources().getString(R.string.exportCompleteLogPrint));
                 }
             });
             executorPool.shutdown();
+            max = 0;
+            userAction = 0;
         }
     }
 
     private synchronized void writeToFile(Tag tag, String dfile) {
-        String fileName = "本地音乐导出.txt";
+        String fileName = getResources().getString(R.string.outputFileName);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
         try {
             if (!file.exists()) {
                 file.createNewFile();
             } else {
-                if (progressPercent == 1) {
-                    new FileWriter(file, false).close();
+                if (progressPercent == 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            logPrint.append("\n已删除旧的“本地音乐导出.txt”文件\n");
+                            alertDialog.show();
                         }
                     });
+                    while (true) {
+                        if (userAction == 1) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    logPrint.append("\n" + getResources().getString(R.string.appendLogPring) + "\n");
+                                }
+                            });
+                            break;
+                        }
+                        if (userAction == 2) {
+                            new FileWriter(file, false).close();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    logPrint.append("\n" + getResources().getString(R.string.overwriteLogPrint) + "\n");
+                                }
+                            });
+                            break;
+                        }
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
             }
             FileWriter fileWriter = new FileWriter(file, true);
@@ -268,12 +319,17 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        increment();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.setMessage("已完成: " + progressPercent + " / " + max);
+                progressDialog.setMessage(getResources().getString(R.string.progress) + progressPercent + " / " + max);
             }
         });
+    }
+
+    private synchronized void increment() {
+        ++progressPercent;
     }
 
 }
