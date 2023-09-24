@@ -64,4 +64,6 @@
 
 You can give me a ⭐ or buy me a cup of coffee if my project is helpful to you!<br>
 Thank you very much for your support!<br>
-[![buyMeACoffee](markdownResources/Sponsorship.png)](markdownResources/Alipay WeChatPay.jpg)
+<a  href="markdownResources/Alipay WeChatPay.jpg">
+<img src="markdownResources/Sponsorship.png" width = "150" height = "90" alt="alipay.jpg" align=center />
+</a>

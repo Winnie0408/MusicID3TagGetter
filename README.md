@@ -65,6 +65,8 @@
 
 如果这个项目对您有所帮助，您可以给我一颗⭐，或者请我喝杯咖啡！<br>
 非常感谢您的支持！ <br>
-[![buyMeACoffee](markdownResources/Sponsorship.png)](markdownResources/Alipay WeChatPay.jpg)
+<a  href="markdownResources/Alipay WeChatPay.jpg">
+<img src="markdownResources/Sponsorship.png" width = "150" height = "90" alt="alipay.jpg" align=center />
+</a>
 
 
