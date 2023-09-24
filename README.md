@@ -61,10 +61,10 @@
     - **读外置存储权限** (`android.permission.READ_EXTERNAL_STORAGE`)：从外置存储(`/storage/emulated/0`)及其子目录中读取音乐文件
     - **写外置存储权限** (`android.permission.WRITE_EXTERNAL_STORAGE`)：向下载目录(`/storage/emulated/0/Download`)中写入结果文件
 
-## 赞助
+## 赞助与支持
 
-如果我的APP对您有所帮助，您可以请我喝杯咖啡！<br>
+如果这个项目对您有所帮助，您可以给我一颗⭐，或者请我喝杯咖啡！<br>
 非常感谢您的支持！ <br>
-<img src="markdownResources/alipay.jpg" width = "200" height = "310" alt="alipay.jpg" align=center />    <img src="markdownResources/wechatpay.png" width = "200" height = "280" alt="wechatpay.jpg" align=center />
+[![buyMeACoffee](markdownResources/Sponsorship.png)](markdownResources/Alipay WeChatPay.jpg)
 
 

@@ -60,8 +60,8 @@
     - **Read External Storage Permissions** (`android.permission.READ_EXTERNAL_STORAGE`): Reading music files from external storage (`/storage/emulated/0`) and its subdirectories.
     - **Write External Storage Permissions** (`android.permission.WRITE_EXTERNAL_STORAGE`): Write the result file to the download directory (`/storage/emulated/0/Download`).
 
-## Donate
+## Sponsorship & Support
 
-You can buy me a cup of coffee if my app is helpful to you!<br>
+You can give me a ⭐ or buy me a cup of coffee if my project is helpful to you!<br>
 Thank you very much for your support!<br>
-<img src="markdownResources/alipay.jpg" width = "200" height = "310" alt="alipay.jpg" align=center />    <img src="markdownResources/wechatpay.png" width = "200" height = "280" alt="wechatpay.jpg" align=center />
+[![buyMeACoffee](markdownResources/Sponsorship.png)](markdownResources/Alipay WeChatPay.jpg)
