@@ -125,6 +125,12 @@ public class MainActivity extends AppCompatActivity {
                 if (data != null) {
                     Uri uri = data.getData();
                     logPrint.append("\n\n" + getResources().getString(R.string.youHaveSelected) + uri.getPathSegments().get(uri.getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/") + getResources().getString(R.string.directory) + "\n");
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkFileExists();
+                        }
+                    });
                     progressDialog.show();
                     executorService.execute(new Runnable() {
                         @Override
@@ -136,6 +142,52 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     });
+
+    private void checkFileExists() {
+        try {
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), getResources().getString(R.string.outputFileName));
+            if (!file.exists()) {
+                file.createNewFile();
+            } else {
+                if (progressPercent == 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            alertDialog.show();
+                        }
+                    });
+                    while (true) {
+                        if (userAction == 1) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    logPrint.append("\n" + getResources().getString(R.string.appendLogPring) + "\n");
+                                }
+                            });
+                            break;
+                        }
+                        if (userAction == 2) {
+                            new FileWriter(file, false).close();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    logPrint.append("\n" + getResources().getString(R.string.overwriteLogPrint) + "\n");
+                                }
+                            });
+                            break;
+                        }
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void manageAllFiles() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // Android 11及以上版本
@@ -273,44 +325,6 @@ public class MainActivity extends AppCompatActivity {
         String fileName = getResources().getString(R.string.outputFileName);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
         try {
-            if (!file.exists()) {
-                file.createNewFile();
-            } else {
-                if (progressPercent == 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            alertDialog.show();
-                        }
-                    });
-                    while (true) {
-                        if (userAction == 1) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    logPrint.append("\n" + getResources().getString(R.string.appendLogPring) + "\n");
-                                }
-                            });
-                            break;
-                        }
-                        if (userAction == 2) {
-                            new FileWriter(file, false).close();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    logPrint.append("\n" + getResources().getString(R.string.overwriteLogPrint) + "\n");
-                                }
-                            });
-                            break;
-                        }
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-            }
             FileWriter fileWriter = new FileWriter(file, true);
             fileWriter.write((tag.getFirst(FieldKey.TITLE) + "#*#" + tag.getFirst(FieldKey.ARTIST) + "#*#" + tag.getFirst(FieldKey.ALBUM) + "#*#" + dfile + "\n"));
             fileWriter.close();
