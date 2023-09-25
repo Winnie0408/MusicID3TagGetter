@@ -1,8 +1,11 @@
-## Welcome to the Get ID3 Tag Tool APP
+<h3 align="right"><a href="README.md">中文</a> / English</h3>
+<p align="center">
+    <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width = "150" height = "150" alt="cover" align=center />
+    <h2 align="center"> Welcome to the Get ID3 Tag Tool APP</h2>
+    <h3 align="center">This tool is mainly used in conjunction with the <a href="https://github.com/Winnie0408/SaltPlayerConverter">SaltPlayer Playlist Converter</a>, but it can also be used independently.</h3>
+</p>
 
-### [中文](README.md)
-
-### This tool is mainly used in conjunction with the [SaltPlayer Playlist Converter](https://github.com/Winnie0408/SaltPlayerConverter), but it can also be used independently.
+---
 
 ## How to Use
 
