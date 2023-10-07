@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
         try {
             FileWriter fileWriter = new FileWriter(file, true);
-            fileWriter.write((tag.getFirst(FieldKey.TITLE) + "#*#" + tag.getFirst(FieldKey.ARTIST) + "#*#" + tag.getFirst(FieldKey.ALBUM) + "#*#" + dfile + "\n"));
+            fileWriter.write((tag.getFirst(FieldKey.TITLE) + "#*#" + tag.getFirst(FieldKey.ARTIST) + "#*#" + tag.getFirst(FieldKey.ALBUM) + "#*#" + dfile + "#*#" + progressPercent + "\n"));
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
