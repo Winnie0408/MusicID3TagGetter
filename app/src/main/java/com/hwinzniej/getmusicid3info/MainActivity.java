@@ -2,7 +2,6 @@ package com.hwinzniej.getmusicid3info;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -40,6 +38,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 123;
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     AlertDialog.Builder alertDialog;
     int userAction = 0;
+    Semaphore userActionSema = new Semaphore(0);
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
 
@@ -91,29 +91,22 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setTitle(getResources().getString(R.string.fileConflictAlertDialogTitle));
         alertDialog.setMessage(getResources().getString(R.string.fileConflictAlertDialogMessage).replace("#n", "\n"));
         alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton(getResources().getString(R.string.fileConflictAlertDialogOptions1), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                userAction = 1;
-            }
+        alertDialog.setPositiveButton(getResources().getString(R.string.fileConflictAlertDialogOptions1), (dialogInterface, i) -> {
+            userAction = 1;
+            userActionSema.release();
         });
-        alertDialog.setNegativeButton(getResources().getString(R.string.fileConflictAlertDialogOptions2), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                userAction = 2;
-            }
+        alertDialog.setNegativeButton(getResources().getString(R.string.fileConflictAlertDialogOptions2), (dialogInterface, i) -> {
+            userAction = 2;
+            userActionSema.release();
         });
 
-        getId3Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.setTitle(getResources().getString(R.string.scanSongsDialogTitle));
-                progressDialog.setMessage(getResources().getString(R.string.scanSongsDialogMessage));
-                logPrint.setText(getResources().getString(R.string.initTextView));
-                progressPercent = 0;
-                executorPool = Executors.newFixedThreadPool(core);
-                manageAllFiles();
-            }
+        getId3Btn.setOnClickListener(v -> {
+            progressDialog.setTitle(getResources().getString(R.string.scanSongsDialogTitle));
+            progressDialog.setMessage(getResources().getString(R.string.scanSongsDialogMessage));
+            logPrint.setText(getResources().getString(R.string.initTextView));
+            progressPercent = 0;
+            executorPool = Executors.newFixedThreadPool(core);
+            manageAllFiles();
         });
     }
 
@@ -125,19 +118,9 @@ public class MainActivity extends AppCompatActivity {
                 if (data != null) {
                     Uri uri = data.getData();
                     logPrint.append("\n\n" + getResources().getString(R.string.youHaveSelected) + uri.getPathSegments().get(uri.getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/") + getResources().getString(R.string.directory) + "\n");
-                    executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            checkFileExists();
-                        }
-                    });
+                    executorService.execute(() -> checkFileExists());
                     progressDialog.show();
-                    executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            listFilesInTree(uri);
-                        }
-                    });
+                    executorService.execute(() -> listFilesInTree(uri));
                 }
             }
         }
@@ -150,36 +133,23 @@ public class MainActivity extends AppCompatActivity {
                 file.createNewFile();
             } else {
                 if (progressPercent == 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            alertDialog.show();
-                        }
-                    });
+                    runOnUiThread(() -> alertDialog.show());
+
                     while (true) {
+                        try {
+                            userActionSema.acquire();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+
                         if (userAction == 1) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    logPrint.append("\n" + getResources().getString(R.string.appendLogPring) + "\n");
-                                }
-                            });
+                            runOnUiThread(() -> logPrint.append("\n" + getResources().getString(R.string.appendLogPring) + "\n"));
                             break;
                         }
                         if (userAction == 2) {
                             new FileWriter(file, false).close();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    logPrint.append("\n" + getResources().getString(R.string.overwriteLogPrint) + "\n");
-                                }
-                            });
+                            runOnUiThread(() -> logPrint.append("\n" + getResources().getString(R.string.overwriteLogPrint) + "\n"));
                             break;
-                        }
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
                         }
                     }
                 }
@@ -229,21 +199,13 @@ public class MainActivity extends AppCompatActivity {
         DocumentFile root = DocumentFile.fromTreeUri(this, treeUri);
         musicCounter(root);
         if (max == 0) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.toastThisDirectoryDoNotHaveMusicFile), Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                }
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.toastThisDirectoryDoNotHaveMusicFile), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             });
             return;
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.setTitle(getResources().getString(R.string.exportSongsDialogTitle));
-            }
-        });
+        runOnUiThread(() -> progressDialog.setTitle(getResources().getString(R.string.exportSongsDialogTitle)));
         listFilesInTree(root);
     }
 
@@ -282,12 +244,7 @@ public class MainActivity extends AppCompatActivity {
                              ReadOnlyFileException | InvalidAudioFrameException e) {
                         continue;
                     }
-                    executorPool.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            handleFile(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/"));
-                        }
-                    });
+                    executorPool.execute(() -> handleFile(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/")));
                 }
             }
         }
@@ -307,13 +264,10 @@ public class MainActivity extends AppCompatActivity {
         writeToFile(tag, dfile);
 
         if (progressPercent == max) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.toastExportComplete1) + progressPercent + getResources().getString(R.string.toastExportComplete2).replace("。", ""), Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                    logPrint.append("\n" + getResources().getString(R.string.toastExportComplete1) + progressPercent + getResources().getString(R.string.toastExportComplete2) + "\n" + getResources().getString(R.string.exportCompleteLogPrint));
-                }
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.toastExportComplete1) + progressPercent + getResources().getString(R.string.toastExportComplete2).replace("。", ""), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                logPrint.append("\n" + getResources().getString(R.string.toastExportComplete1) + progressPercent + getResources().getString(R.string.toastExportComplete2) + "\n" + getResources().getString(R.string.exportCompleteLogPrint));
             });
             executorPool.shutdown();
             max = 0;
@@ -331,15 +285,13 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
             return;
+        } catch (Exception e) {
+            logPrint.append("\n" + dfile + getResources().getString(R.string.failReadTag) + e + "\n");
+            return;
         }
 
         increment();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.setMessage(getResources().getString(R.string.progress) + progressPercent + " / " + max);
-            }
-        });
+        runOnUiThread(() -> progressDialog.setMessage(getResources().getString(R.string.progress) + progressPercent + " / " + max));
     }
 
     private synchronized void increment() {

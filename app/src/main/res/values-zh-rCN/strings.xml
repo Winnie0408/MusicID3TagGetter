@@ -26,4 +26,5 @@
     <string name="appendLogPring">本次导出将追加到原有的“本地音乐导出.txt”文件。</string>
     <string name="overwriteLogPrint">已删除旧的“本地音乐导出.txt”文件。</string>
     <string name="progress">进度：</string>
+    <string name="failReadTag">" 获取标签失败。错误信息："</string>
 </resources>

@@ -1,9 +1,9 @@
 <h3 align="right"><a href="README.md">中文</a> / English</h3>
 <p align="center">
     <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width = "150" height = "150" alt="cover" align=center />
+</p>
     <h2 align="center"> Welcome to the Get ID3 Tag Tool APP</h2>
     <h3 align="center">This tool is mainly used in conjunction with the <a href="https://github.com/Winnie0408/SaltPlayerConverter">SaltPlayer Playlist Converter</a>, but it can also be used independently.</h3>
-</p>
 
 ---
 
@@ -65,8 +65,11 @@
 
 ## Sponsorship & Support
 
+🥰🥰🥰
+
 You can give me a ⭐ or buy me a cup of coffee if my project is helpful to you!<br>
 Thank you very much for your support!<br>
-<a  href="markdownResources/Alipay WeChatPay.jpg">
+⬇️⬇️⬇️<br>
+<a href="markdownResources/Alipay WeChatPay.jpg">
 <img src="markdownResources/Sponsorship.png" width = "150" height = "90" alt="alipay.jpg" align=center />
 </a>

@@ -25,4 +25,5 @@
     <string name="appendLogPring">This export will be added to the original \"Local Music Export.txt\" file.</string>
     <string name="overwriteLogPrint">The old \"Local Music Export.txt\" file has been deleted.</string>
     <string name="progress">"Progress: "</string>
+    <string name="failReadTag">" Get ID3 Tag failed. Error info:"</string>
 </resources>

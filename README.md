@@ -1,9 +1,9 @@
 <h3 align="right">中文 / <a href="README_ENG.md">English</a></h3>
 <p align="center">
     <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width = "150" height = "150" alt="cover" align=center />
+</p>
     <h2 align="center"> 欢迎使用 获取ID3标签 小工具</h2>
     <h3 align="center">本工具主要用来配合 <a href="https://github.com/Winnie0408/SaltPlayerConverter">椒盐歌单转换助手</a> 使用，当然也可独立使用。</h3>
-</p>
 
 ---
 
@@ -66,10 +66,13 @@
 
 ## 赞助与支持
 
-如果这个项目对您有所帮助，您可以给我一颗⭐，或者请我喝杯咖啡！<br>
+🥰🥰🥰
+
+如果这个项目对您有所帮助，您可以给我一颗免费的⭐，或者请我喝杯咖啡！<br>
 非常感谢您的支持！ <br>
-<a  href="markdownResources/Alipay WeChatPay.jpg">
-<img src="markdownResources/Sponsorship.png" width = "150" height = "90" alt="alipay.jpg" align=center />
+⬇️⬇️⬇️<br>
+<a href="markdownResources/Alipay WeChatPay.jpg">
+<img src="markdownResources/Sponsorship.png" width = "150" height = "90" alt="Sponsorship.jpg" align=center />
 </a>
 
 
