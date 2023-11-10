@@ -26,4 +26,5 @@
     <string name="overwriteLogPrint">The old \"Local Music Export.txt\" file has been deleted.</string>
     <string name="progress">"Progress: "</string>
     <string name="failReadTag">" Get ID3 Tag failed. Error info:"</string>
+    <string name="ThisDirectoryDoNotHaveMusicFile">No music files in the selected directory.</string>
 </resources>

@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     int userAction = 0;
     Semaphore userActionSema = new Semaphore(0);
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    String absolutePath;
 
 
     @Override
@@ -117,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent data = result.getData();
                 if (data != null) {
                     Uri uri = data.getData();
-                    logPrint.append("\n\n" + getResources().getString(R.string.youHaveSelected) + uri.getPathSegments().get(uri.getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/") + getResources().getString(R.string.directory) + "\n");
+                    setAbsolutePath(uri.getPathSegments().get(uri.getPathSegments().size() - 1));
+//                    logPrint.append("\n\n" + getResources().getString(R.string.youHaveSelected) + uri.getPathSegments().get(uri.getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/") + getResources().getString(R.string.directory) + "\n");
+                    logPrint.append("\n\n" + getResources().getString(R.string.youHaveSelected) + absolutePath + getResources().getString(R.string.directory) + "\n");
                     executorService.execute(() -> checkFileExists());
                     progressDialog.show();
                     executorService.execute(() -> listFilesInTree(uri));
@@ -125,6 +128,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     });
+
+    private void setAbsolutePath(String uri) {
+        if (uri.contains("primary")) {
+            absolutePath = uri.replace("primary:", "/storage/emulated/0/");
+        } else {
+            absolutePath = "/storage/" + uri.split(":")[0] + "/" + uri.split(":")[1];
+        }
+
+    }
 
     private void checkFileExists() {
         try {
@@ -200,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
         musicCounter(root);
         if (max == 0) {
             runOnUiThread(() -> {
+                logPrint.append("\n" + getResources().getString(R.string.ThisDirectoryDoNotHaveMusicFile));
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.toastThisDirectoryDoNotHaveMusicFile), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             });
@@ -216,7 +229,8 @@ public class MainActivity extends AppCompatActivity {
                     // 如果是目录，递归遍历
                     musicCounter(file);
                 } else {
-                    File file1 = new File(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/"));
+//                    File file1 = new File(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/"));
+                    File file1 = new File(absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1) + file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).split(":")[1]);
                     // 如果是音乐文件，计数器加1
                     try {
                         AudioFileIO.read(file1);
@@ -237,14 +251,16 @@ public class MainActivity extends AppCompatActivity {
                     // 如果是目录，则递归遍历
                     listFilesInTree(file);
                 } else {
-                    File file1 = new File(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/"));
+//                    File file1 = new File(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/"));
+                    File file1 = new File(absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1) + file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).split(":")[1]);
                     try {
                         AudioFileIO.read(file1);
                     } catch (CannotReadException | IOException | TagException |
                              ReadOnlyFileException | InvalidAudioFrameException e) {
                         continue;
                     }
-                    executorPool.execute(() -> handleFile(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/")));
+//                    executorPool.execute(() -> handleFile(file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).replace("primary:", "/storage/emulated/0/")));
+                    executorPool.execute(() -> handleFile(absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1) + file.getUri().getPathSegments().get(file.getUri().getPathSegments().size() - 1).split(":")[1]));
                 }
             }
         }
@@ -272,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
             executorPool.shutdown();
             max = 0;
             userAction = 0;
+            absolutePath = "";
         }
     }
 
