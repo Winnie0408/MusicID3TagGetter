@@ -2,14 +2,14 @@
 <p align="center">
     <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width = "150" height = "150" alt="cover" align=center />
 </p>
-    <h2 align="center"> Welcome to the Get ID3 Tag Tool APP</h2>
+    <h2 align="center"> Welcome to the Get Music Tag Tool APP</h2>
     <h3 align="center">This tool is mainly used in conjunction with the <a href="https://github.com/Winnie0408/SaltPlayerConverter">SaltPlayer Playlist Converter</a>, but it can also be used independently.</h3>
 
 ---
 
 ## How to Use
 
-1. Open the **Get ID3 Tag** application.
+1. Open the **Get Music Tag** application.
 2. Click the **Select Directory** button.
 3. Grant permissions as prompted by the software:
     * Android 11 and above: Grant **Manage All Files Access Permission** `android.permission.MANAGE_EXTERNAL_STORAGE`
@@ -32,7 +32,7 @@
 | Directory Tree Example     | ![img.png](markdownResources/img3.png)                                                                                                                                                               |
 | Operation Method           | Multiple selection operations are required, **each time select one** directory that stores music (such as `中文歌曲`, `temp` in the picture), and choose **Append** in the following conflict dialog box |
 
-5. Wait for the music ID3 information to be exported.
+5. Wait for the music tag information to be exported.
 6. Go to the `/storage/emulated/0/Download`(i.e., `/sdcard/Download`)directory and check the **Local Music Export.txt** file.
 7. Use the **Local Music Export.txt** file.
 

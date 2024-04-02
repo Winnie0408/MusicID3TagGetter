@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             absolutePath = "/storage/" + uri.split(":")[0] + "/" + uri.split(":")[1];
         }
-
     }
 
     private void checkFileExists() {

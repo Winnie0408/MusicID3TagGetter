@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Get ID3 Tag</string>
+    <string name="app_name">Get Music Tag</string>
     <string name="setDir">Select Directory</string>
     <string name="initTextView">Please click on the button to select the directory where the music files are stored.</string>
     <string name="toastChooseDirectory">Please select the directory where you want to store your music files</string>

@@ -2,14 +2,14 @@
 <p align="center">
     <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width = "150" height = "150" alt="cover" align=center />
 </p>
-    <h2 align="center"> 欢迎使用 获取ID3标签 小工具</h2>
+    <h2 align="center"> 欢迎使用 获取音乐标签 小工具</h2>
     <h3 align="center">本工具主要用来配合 <a href="https://github.com/Winnie0408/SaltPlayerConverter">椒盐歌单转换助手</a> 使用，当然也可独立使用。</h3>
 
 ---
 
 ## 使用方法
 
-1. 打开**获取ID3标签**应用程序。
+1. 打开**获取音乐标签**应用程序。
 2. 点击**选择目录**按钮。
 3. 按照软件提示授予权限：
     * Android 11及以上：授予 **所有文件管理权限** `android.permission.MANAGE_EXTERNAL_STORAGE`
@@ -33,7 +33,7 @@
 | 目录树示例    | ![img.png](markdownResources/img3.png)                               |
 | 操作方法     | 需要进行多次选择操作，每次选择**一个**存放音乐的目录(如图中的`中文歌曲`、`temp`)，并在接下来的冲突对话框中选择**追加** |
 
-5. 等待音乐ID3信息导出完成。
+5. 等待音乐标签信息导出完成。
 6. 前往`/storage/emulated/0/Download`(`即/sdcard/Download`)目录，查看**本地音乐导出.txt**文件。
 7. 使用**本地音乐导出.txt**文件。
 

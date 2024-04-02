@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">获取ID3标签</string>
+    <string name="app_name">获取音乐标签</string>
     <string name="setDir">选择目录</string>
     <string name="initTextView">请点击按钮，选择存放音乐文件的目录。</string>
     <string name="toastChooseDirectory">请选择存放音乐文件的目录</string>
